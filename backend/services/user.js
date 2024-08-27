@@ -1,7 +1,7 @@
 const User = require("../models/User");
 
 const findUser = (userName) => {
-  return User.find({ username: userName });
+  return User.findOne({ username: userName });
 };
 
 const createUser = (userName, password) => {

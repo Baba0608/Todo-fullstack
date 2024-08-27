@@ -1,10 +1,24 @@
+const generateToken = require("../utils/generateToken");
+
 const userServices = require("../services/user");
 
 const login = async (req, res) => {
   const { username, password } = req.body;
+  console.log(username);
   try {
     const user = await userServices.findUser(username);
     if (user) {
+      if (user.password === password) {
+        return res.status(200).json({
+          success: true,
+          message: "User Logged in successfully",
+          token: generateToken(user.id, user.username),
+        });
+      } else {
+        return res
+          .status(401)
+          .json({ success: false, message: "Password is incorrect" });
+      }
     } else {
       return res
         .status(404)
