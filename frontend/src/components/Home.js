@@ -1,16 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Todo from "./Todo";
 
-let todos = [
-  { id: 1, todo: "Learn React Js", completed: true },
-  { id: 2, todo: "Learn Next Js", completed: false },
-  { id: 3, todo: "Learn Java Script", completed: true },
-  { id: 4, todo: "Learn Angular Js", completed: false },
-];
+import { GET_TODOS_API } from "../utils/constants";
+
+import axios from "axios";
+import useToken from "../utils/useToken";
 
 const Home = () => {
-  const [todoList, setTodoList] = useState(todos);
+  const [todoList, setTodoList] = useState([]);
   const [todo, setTodo] = useState("");
+  const token = useToken();
 
   const addTodo = () => {
     setTodoList([
@@ -34,7 +33,18 @@ const Home = () => {
     setTodoList((todoList) => todoList.filter((todo) => todo.id !== id));
   };
 
-  console.log(todoList);
+  const getTodos = async () => {
+    const { data } = await axios.get(GET_TODOS_API, {
+      headers: { authorization: token },
+    });
+
+    console.log(data.todos);
+    setTodoList(data.todos);
+  };
+
+  useEffect(() => {
+    getTodos();
+  }, []);
 
   return (
     <div className="mt-10 flex justify-center">
@@ -55,13 +65,17 @@ const Home = () => {
         <hr className="border-b-2 border-gray-400 mb-5" />
 
         <div>
-          {todoList.map((data) => (
-            <Todo
-              key={data.id}
-              data={data}
-              funcs={{ updateTodo, deleteTodo }}
-            />
-          ))}
+          {todoList.length === 0 ? (
+            <h1 className="flex justify-center">No todos available 😃</h1>
+          ) : (
+            todoList.map((data) => (
+              <Todo
+                key={data.id}
+                data={data}
+                funcs={{ updateTodo, deleteTodo }}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>

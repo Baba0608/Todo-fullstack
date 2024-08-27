@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+
 const sequelize = require("../utils/database");
 
 const Todo = sequelize.define("todo", {
@@ -18,6 +19,11 @@ const Todo = sequelize.define("todo", {
     type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
+  },
+
+  userId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
 });
 

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../contexts/userContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { USER_LOGIN_API } from "../utils/constants";
 
 const Login = () => {
   const [user, setUser] = useState("");
@@ -11,13 +13,22 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const auth = () => {
+  const auth = async () => {
     // auth logic
-    setUserName(user);
+    try {
+      const { data } = await axios.post(USER_LOGIN_API, {
+        username: user,
+        password: password,
+      });
+      localStorage.setItem("token", data.token);
+      setUserName(user);
+      navigate("/home");
+    } catch (err) {
+      console.log(err);
+    }
+
     setUser("");
     setPassword("");
-    console.log("send details to backend");
-    navigate("/home");
   };
 
   return (

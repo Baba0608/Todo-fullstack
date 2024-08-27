@@ -4,7 +4,6 @@ const userServices = require("../services/user");
 
 const login = async (req, res) => {
   const { username, password } = req.body;
-  console.log(username);
   try {
     const user = await userServices.findUser(username);
     if (user) {

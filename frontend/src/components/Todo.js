@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 const Todo = ({
-  data: { id, todo, completed },
+  data: { id, todoItem, completed },
   funcs: { updateTodo, deleteTodo },
 }) => {
   const [isCompleted, setIsCompleted] = useState(completed);
   const [isEditing, setIsEditing] = useState(false);
-  const [todoMsg, setTodoMsg] = useState(todo);
+  const [todoMsg, setTodoMsg] = useState(todoItem);
 
   const checkTodo = () => {
     setIsCompleted(!isCompleted);
